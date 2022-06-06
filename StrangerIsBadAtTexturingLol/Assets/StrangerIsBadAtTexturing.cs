@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 using TMPro;
+using System;
 
 public class StrangerIsBadAtTexturing : MonoBehaviour
 {
@@ -92,9 +93,9 @@ public class StrangerIsBadAtTexturing : MonoBehaviour
 
 	    	if ( hitIndices.Length > 0 )
 	    	{
-		    	Vector3 position1 = vertices[ hitIndices[ 0 ] ];
-		    	Vector3 position2 = vertices[ hitIndices[ 1 ] ];
-		    	Vector3 position3 = vertices[ hitIndices[ 2 ] ];
+		    	Vector3 position1 = vertices[ hitIndices[ 0 ] ] * transform.localScale.x;
+		    	Vector3 position2 = vertices[ hitIndices[ 1 ] ] * transform.localScale.x;
+		    	Vector3 position3 = vertices[ hitIndices[ 2 ] ] * transform.localScale.x;
 
 		    	lineRenderer.SetPosition( 0, position1 );
 		    	lineRenderer.SetPosition( 1, position2 );
@@ -149,6 +150,28 @@ public class StrangerIsBadAtTexturing : MonoBehaviour
     {
     	AssetDatabase.CreateAsset( currentMesh, "Assets/output.asset" );
     	AssetDatabase.SaveAssets();
+    }
+
+    public void Bucket()
+    {
+    	for (int i = 0; i < colors.Length; i++)
+    		colors[ i ] = colorPicker.color;
+    	currentMesh.SetColors( colors );    	
+    }
+
+    public void ChangeScale( string val )
+    {
+        try
+        {
+            int numVal = Int32.Parse( val );
+
+            transform.localScale = new Vector3( numVal, numVal, numVal );
+            
+        }
+        catch (FormatException e)
+        {
+
+        }    	
     }
 
     public static Color hexToColor(string hex)
